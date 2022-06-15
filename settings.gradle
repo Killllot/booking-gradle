@@ -1,4 +1,5 @@
 rootProject.name = 'booking-grdl'
 
 include 'main'
+include 'data'
 
