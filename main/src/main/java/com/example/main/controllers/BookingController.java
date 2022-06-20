@@ -1,9 +1,9 @@
 package com.example.main.controllers;
 
 
-import com.example.main.dto.booking.ValidatedBookingDto;
+import com.example.data.dto.booking.ValidatedBookingDto;
 import com.example.main.mapper.booking.BookingMapper;
-import com.example.main.models.Booking;
+import com.example.data.models.Booking;
 import com.example.main.service.BookingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

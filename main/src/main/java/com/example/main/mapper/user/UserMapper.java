@@ -3,9 +3,9 @@ package com.example.main.mapper.user;
 //import com.newBooking.DTO.User.createUserDTO;
 //import com.newBooking.Data.Entity.UserEntity;
 
-import com.example.main.dto.user.ValidatedUserDto;
+import com.example.data.dto.user.ValidatedUserDto;
 import com.example.main.entity.UserEntity;
-import com.example.main.models.User;
+import com.example.data.models.User;
 
 public class UserMapper {
 

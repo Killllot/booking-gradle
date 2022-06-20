@@ -1,4 +1,4 @@
-package com.example.main.dto.booking;
+package com.example.data.dto.booking;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

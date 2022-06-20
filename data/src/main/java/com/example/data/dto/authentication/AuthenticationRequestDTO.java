@@ -1,4 +1,4 @@
-package com.example.main.dto.authentication;
+package com.example.data.dto.authentication;
 
 import lombok.Data;
 

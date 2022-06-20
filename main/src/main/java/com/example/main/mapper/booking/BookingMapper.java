@@ -1,12 +1,12 @@
 package com.example.main.mapper.booking;
 
 
-import com.example.main.dto.booking.ValidatedBookingDto;
-import com.example.main.dto.user.ValidatedUserDto;
+import com.example.data.dto.booking.ValidatedBookingDto;
+import com.example.data.dto.user.ValidatedUserDto;
 import com.example.main.entity.BookingEntity;
 import com.example.main.entity.RoomEntity;
 import com.example.main.entity.UserEntity;
-import com.example.main.models.Booking;
+import com.example.data.models.Booking;
 
 import java.util.HashMap;
 

@@ -12,7 +12,7 @@ spring:
     restart:
       enabled: false
   liquibase:
-    enabled: true
+    enabled: false
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

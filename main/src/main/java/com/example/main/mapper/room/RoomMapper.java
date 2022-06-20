@@ -3,9 +3,9 @@ package com.example.main.mapper.room;
 //import com.newBooking.DTO.Room.createRoomDTO;
 //import com.newBooking.Data.Entity.RoomEntity;
 
-import com.example.main.dto.room.ValidatedRoomDto;
+import com.example.data.dto.room.ValidatedRoomDto;
 import com.example.main.entity.RoomEntity;
-import com.example.main.models.Room;
+import com.example.data.models.Room;
 
 public class RoomMapper {
     public static Room toModel (RoomEntity roomEntity) {

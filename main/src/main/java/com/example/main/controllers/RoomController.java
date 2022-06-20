@@ -1,8 +1,8 @@
 package com.example.main.controllers;
 
-import com.example.main.dto.room.ValidatedRoomDto;
+import com.example.data.dto.room.ValidatedRoomDto;
 import com.example.main.mapper.room.RoomMapper;
-import com.example.main.models.Room;
+import com.example.data.models.Room;
 import com.example.main.service.RoomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
