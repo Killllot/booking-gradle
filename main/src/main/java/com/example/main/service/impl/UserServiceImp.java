@@ -19,7 +19,6 @@ public class UserServiceImp implements UserService {
     private long minimumNameLength;
 
     private final UserRepository userRepository;
-
     private final RoleRepository roleRepository;
 
 
@@ -43,7 +42,7 @@ public class UserServiceImp implements UserService {
         log.info("IN getUser - user: {} found by id: {}",user, id);
         if(user==null) {
             log.warn("IN getUser - no user found by id: {}", id);
-            throw new RuntimeException("Пользователь с таким id не найден");
+            throw new RuntimeException("User with id:{" + id +"} not found");
         }
         return user;
     }

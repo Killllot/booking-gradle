@@ -1,4 +1,4 @@
-package com.example.main.service;
+package com.example.main.service.impl;
 
 
 import com.example.main.entity.BookingEntity;
@@ -7,6 +7,9 @@ import com.example.main.entity.UserEntity;
 import com.example.main.repository.BookingRepository;
 import com.example.main.repository.RoomRepository;
 import com.example.main.repository.UserRepository;
+import com.example.main.service.Interface.BookingService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -21,37 +24,42 @@ import java.util.List;
 
 
 @Service
-public class BookingService {
+public class BookingServiceImp implements BookingService {
 
     @Value("${const.minimumBookingDuration}")
     private long minimumBookingDuration;
 
-    @Autowired
-    private BookingRepository bookingRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoomRepository roomRepository;
+    private final BookingRepository bookingRepository;
+    private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
 
+    @Autowired
+    public BookingServiceImp(BookingRepository bookingRepository, UserRepository userRepository, RoomRepository roomRepository) {
+        this.bookingRepository = bookingRepository;
+        this.userRepository = userRepository;
+        this.roomRepository = roomRepository;
+    }
+
+    @Override
     public BookingEntity createBooking(BookingEntity booking)  {
 
         UserEntity user = userRepository.findById(booking.getUser().getId()).orElse(null);
         if(user==null) {
-            throw  new RuntimeException("Пользователя с таким id не существует");
+            throw  new RuntimeException("User with id:{" + booking.getUser().getId() +"} not found");
         }
 
         RoomEntity room = roomRepository.findById(booking.getRoom().getId()).orElse(null);
         if (room==null) {
-            throw new RuntimeException("Комнаты с таким id не существует");
+            throw new RuntimeException("oom with id:{" + booking.getRoom().getId() +"} not found");
         }
 
         if( ChronoUnit.MINUTES.between(booking.getFromUtc(), booking.getToUtc()) < minimumBookingDuration) {
-            throw new RuntimeException("Время бронирования не может быть отрицательным и должно быть больше "+ minimumBookingDuration +" минут");
+            throw new RuntimeException("The booking time cannot be negative and must be more than "+ minimumBookingDuration +" minutes");
         }
 
         var newAlreadyCreatedBooking = bookingRepository.findBookingEntityByFromUtcIsBeforeAndToUtcAfter(booking.getFromUtc(),booking.getToUtc(),booking.getRoom().getId());
         if(newAlreadyCreatedBooking.size()!=0) {
-            throw new RuntimeException("Бронирование с такой датой уже существует");
+            throw new RuntimeException("A booking with such a date already exists");
         }
 
         booking.setUser(user);
@@ -60,13 +68,15 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
+    @Override
     public BookingEntity getBooking(Long id) {
         BookingEntity booking = bookingRepository.findById(id).orElse(null);
         if(booking==null) {
-            throw new RuntimeException("Бронирование с таким id не найдено");
+            throw new RuntimeException("Booking with id:{" + id +"} not found");
         }
         return booking;
     }
+
 
     private Sort.Direction getSortDirection(String direction) {
         if (direction.equals("asc")) {
@@ -78,6 +88,7 @@ public class BookingService {
         return Sort.Direction.ASC;
     }
 
+    @Override
     public Page<BookingEntity> getBookingByPage(Integer quantity, Integer page,String[] sort) {
         List<Sort.Order> orders = new ArrayList<Sort.Order>();
 
@@ -98,6 +109,7 @@ public class BookingService {
         return bookingRepository.findAll(paging);
     }
 
+    @Override
     public List<BookingEntity> getAll() {
         return bookingRepository.findAll();
     }

@@ -1,7 +1,8 @@
 package com.example.main.controllers;
 
 import com.example.main.mapper.user.UserMapper;
-import com.example.main.service.impl.UserServiceImp;
+import com.example.main.service.Interface.UserService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +12,11 @@ import javax.validation.constraints.NotNull;
 
 @Slf4j
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private UserServiceImp userService;
+    private UserService userService;
 
 
     @GetMapping("/getAll")
