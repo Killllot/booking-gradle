@@ -7,12 +7,12 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
   devtools:
     restart:
-      enabled: false
+      enabled: true
   liquibase:
-    enabled: false
+    enabled: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
