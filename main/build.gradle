@@ -20,6 +20,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.0'
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
     implementation 'org.springframework.boot:spring-boot-devtools:2.7.0'
+
+    implementation 'org.springframework.kafka:spring-kafka'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
