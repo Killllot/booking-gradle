@@ -13,11 +13,11 @@ import org.springframework.kafka.core.ProducerFactory;
 import java.util.Map;
 
 @Configuration
-public class Config {
+public class KafkaProducerConfig {
     private final KafkaProperties kafkaProperties;
 
     @Autowired
-    public Config(KafkaProperties kafkaProperties) {
+    public KafkaProducerConfig(KafkaProperties kafkaProperties) {
         this.kafkaProperties = kafkaProperties;
     }
 
