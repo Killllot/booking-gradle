@@ -29,7 +29,7 @@ public class ProducerBooking {
         String orderAsMessage = objectMapper.writeValueAsString(test);
         kafkaTemplate.send(orderTopic, orderAsMessage);
 
-        log.info("food order produced {}", orderAsMessage);
+        log.info("message produced {}", orderAsMessage);
 
         return "message sent";
     }
