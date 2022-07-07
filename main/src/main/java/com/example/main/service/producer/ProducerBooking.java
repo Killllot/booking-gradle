@@ -16,16 +16,15 @@ public class ProducerBooking {
     @Value("${topic.name}")
     private String orderTopic;
 
-    private final ObjectMapper objectMapper;
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Autowired
-    public ProducerBooking(KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
+    public ProducerBooking(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
-        this.objectMapper = objectMapper;
     }
 
     public String sendMessage(KafkaTest test) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
         String orderAsMessage = objectMapper.writeValueAsString(test);
         kafkaTemplate.send(orderTopic, orderAsMessage);
 

@@ -14,7 +14,7 @@ spring:
     restart:
       enabled: true
   liquibase:
-    enabled: true
+    enabled: false
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -23,6 +23,7 @@ spring:
     consumer:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: "default"
 
 management:
   endpoint:
@@ -35,4 +36,6 @@ management:
 
 topic:
   name: t.booking
+topicCurrency:
+  name: t.currency
 
