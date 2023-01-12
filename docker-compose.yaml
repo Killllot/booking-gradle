@@ -51,47 +51,48 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "Kirill"
 
-  application:
-    container_name: application
-    build:
-      context: ./main
-      dockerfile: Dockerfile
+  pgAdmin:
+    container_name: pgAdmin
+    image: dpage/pgadmin4
+    restart: always
     environment:
-      - DB_URL=postgres
-      - DB_USER=postgres
-      - DB_PASSWORD=Kirill
-    depends_on:
-      - postgres
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: root
     ports:
-      - "8080:8080"
+        - "5050:80"
+
 
   zookeeper:
-    image: zookeeper:3.7.0
-    container_name: zookeeper
-    restart: "no"
-    networks:
-     - kafka-net
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - "2181:2181"
+      - 22181:2181
 
   kafka:
-    image: obsidiandynamics/kafka
-    container_name: kafka
-    restart: "no"
-    networks:
-      - kafka-net
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER_INTERNAL:PLAINTEXT,DOCKER_EXTERNAL:PLAINTEXT
-      KAFKA_LISTENERS: DOCKER_INTERNAL://:19092,DOCKER_EXTERNAL://:9092
-      KAFKA_ADVERTISED_LISTENERS: DOCKER_INTERNAL://kafka:19092,DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
-      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER_INTERNAL
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    depends_on:
-      - zookeeper
+      image: confluentinc/cp-kafka:latest
+      depends_on:
+        - zookeeper
+      ports:
+        - 29092:29092
+      environment:
+        KAFKA_BROKER_ID: 1
+        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+        KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+        KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  kowl:
+      image: quay.io/cloudhut/kowl:master
+      restart: always
+      network_mode: host
+      depends_on:
+        - kafka
+      environment:
+        KAFKA_BROKERS: localhost:29092
+
+
 
   kafdrop:
     image: obsidiandynamics/kafdrop
@@ -106,16 +107,3 @@ services:
     depends_on:
       - "kafka"
 
-  kowl:
-    image: quay.io/cloudhut/kowl:v1.4.0
-    restart: on-failure
-    volumes:
-      - ./kowl_config:/etc/kowl/
-    ports:
-      - "8088:8080"
-    entrypoint: ./kowl --config.filepath=/etc/kowl/config.yaml
-    networks:
-      - kafka-net
-    depends_on:
-      - kafka
-      - zookeeper
